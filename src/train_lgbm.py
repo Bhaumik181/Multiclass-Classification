@@ -8,12 +8,12 @@ PREP_PATH = "../data/preprocessed/"
 MODEL_PATH = "../model/"
 os.makedirs(MODEL_PATH, exist_ok=True)
 
-# Load data
+# Load preprocessed data
 X = np.load(PREP_PATH + "X.npy")
 y = np.load(PREP_PATH + "y.npy")
 
-FOLDS = 5
-EPOCHS = 2000   # maximum number of boosting rounds
+FOLDS = 4
+EPOCHS = 3000   # epochs = maximum number of trees
 
 skf = StratifiedKFold(n_splits=FOLDS, shuffle=True, random_state=42)
 
@@ -43,7 +43,7 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(X, y), 1):
         verbosity=-1
     )
 
-    # Early stopping using callback (works in all LightGBM versions)
+    # Callbacks for early stopping (compatible with all LightGBM versions)
     callbacks = [
         lgb.early_stopping(stopping_rounds=100, verbose=False),
         lgb.log_evaluation(period=0)
@@ -58,14 +58,16 @@ for fold, (train_idx, val_idx) in enumerate(skf.split(X, y), 1):
 
     preds = model.predict(X_val)
     acc = accuracy_score(y_val, preds)
-    print(f"Fold {fold} Accuracy: {acc*100:.2f}%")
+    print(f"Fold {fold} Accuracy: {acc * 100:.2f}%")
 
     models.append(model)
     scores.append(acc)
 
 print("\n====================================")
-print(f"Average CV Accuracy: {np.mean(scores)*100:.2f}%")
+print(f"Average CV Accuracy: {np.mean(scores) * 100:.2f}%")
 print("====================================")
 
+# IMPORTANT: Save with the exact name your predict/evaluate expects
 joblib.dump(models, MODEL_PATH + "advanced_lgbm_models.pkl")
-print("Advanced LightGBM models saved successfully.")
+
+print("Advanced LightGBM models saved as: model/advanced_lgbm_models.pkl")
