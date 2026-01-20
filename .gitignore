@@ -1,0 +1,19 @@
+# CatBoost logs
+src/catboost_info/
+
+# Python
+__pycache__/
+*.pyc
+
+# Models
+model/*.pkl
+
+# Submissions
+submissions/*.csv
+
+# Node
+node_modules/
+
+# Environment
+.env
+venv/
