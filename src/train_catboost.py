@@ -31,9 +31,7 @@ print("Target mapping:")
 for i, cls in enumerate(le.classes_):
     print(f"{cls} → {i}")
 
-# -----------------------
 # Training Configuration
-# -----------------------
 FOLDS = 5
 EPOCHS = 1200
 LEARNING_RATE = 0.03

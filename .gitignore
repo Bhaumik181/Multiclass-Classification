@@ -11,9 +11,7 @@ model/*.pkl
 # Submissions
 submissions/*.csv
 
-# Node
 node_modules/
 
-# Environment
 .env
 venv/
